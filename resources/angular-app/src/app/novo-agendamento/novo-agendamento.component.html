@@ -1,12 +1,11 @@
 <div fxLayout="column" fxLayoutAlign="space-around left">
     <div fxLayout="row" fxLayoutAlign="space-between">
         <mat-form-field fxFlex="50">
-        
-            <input matInput placeholder="Busque um cliente" aria-label="Cliente" [matAutocomplete]="auto" [formControl]="searchClientsCtrl">
+            <input matInput placeholder="Busque um cliente" aria-label="Cliente" [matAutocomplete]="auto" [formControl]="searchClientsCtrl" (change)="limparIdCliente()">
             <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngIf="isLoading" class="is-loading">Carregando...</mat-option>
             <ng-container *ngIf="!isLoading">
-                <mat-option *ngFor="let c of filteredClients" [value]="c.nome">
+                <mat-option *ngFor="let c of filteredClients" [value]="c.nome" (click)="selecionarCliente(c.id)">
                 <span>{{c.nome}} ({{c.sobrenome}})</span>
                 </mat-option>
             </ng-container>
@@ -49,7 +48,7 @@
     <div fxLayout="row" fxLayoutAlign="space-between">
         <mat-form-field fxFlex="50">
             <mat-label>Barbeiro</mat-label>
-            <mat-select>
+            <mat-select [(ngModel)]="dados.agendamento.barbeiro_id">
                 <mat-option [value]=""></mat-option>
                 <mat-option *ngFor="let b of barbeiros" [value]="b.id">
                     {{b.nome}}
@@ -58,7 +57,7 @@
         </mat-form-field>
         <mat-form-field fxFlex="40">
             <mat-label>Serviço</mat-label>
-            <mat-select>
+            <mat-select [(ngModel)]="dados.agendamento.descricao">
                 <mat-option value=""></mat-option>
                 <mat-option value="BARBA">BARBA</mat-option>
                 <mat-option value="CABELO">CABELO</mat-option>
@@ -74,6 +73,6 @@
 <br><br>
 
 <div style="text-align: center;">
-    <button mat-button color="primary">OK</button>
-    <button mat-button color="warn">Cancelar</button>
+    <button mat-button color="primary" (click)="salvar()">Salvar</button>
+    <button mat-button color="warn" (click)="cancelar()">Cancelar</button>
 </div>

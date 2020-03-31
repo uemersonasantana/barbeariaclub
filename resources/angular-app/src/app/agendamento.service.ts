@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEventType, HttpEvent } from '@angular/common/http';
-import { AgendamentoComponent } from './agendamento/agendamento.component';
+import { HttpClient, HttpEventType, HttpEvent } from '@angular/common/http'
 import { Agendamento } from './agendamento/agendamento';
 
-@Injectable(
-  //{providedIn: 'root'}
-)
+@Injectable({
+  providedIn: 'root'
+})
 export class AgendamentoService {
 
   public agendamentos: Agendamento[] = [];
@@ -28,5 +27,8 @@ export class AgendamentoService {
         }
       }
     );*/
+  }
+
+  salvar(agendamento: Agendamento) {
   }
 }

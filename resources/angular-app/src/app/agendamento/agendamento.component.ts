@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NovoAgendamentoComponent } from '../novo-agendamento/novo-agendamento.component';
-import { AgendamentoService } from '../agendamento.service';
-import { Agendamento } from './agendamento';
+import {Agendamento} from '../agendamento/agendamento';
+import {AgendamentoService} from '../agendamento.service';
 
 export interface PeriodicElement {
   name: string;
@@ -31,12 +31,12 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class AgendamentoComponent  {
   
-  //@Input() agendamento: Agendamento;
   
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = ELEMENT_DATA;
 
   constructor(
+    private AgendamentoService: AgendamentoService,
     public dialog: MatDialog
   ) {}
 
@@ -52,7 +52,8 @@ export class AgendamentoComponent  {
     dialogRef.afterClosed().subscribe(
       (result) => {
         if (result) {
-          //this.postService.salvar(result.post, result.arquivo);
+          console.log(result.agendamento);
+          //this.AgendamentoService.salvar(result.agendamento);
         }
       }
     );
