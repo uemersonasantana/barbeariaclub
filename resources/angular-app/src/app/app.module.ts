@@ -33,11 +33,18 @@ import { HttpClientModule } from '@angular/common/http';
 import { AgendamentoComponent } from './agendamento/agendamento.component';
 import { NovoAgendamentoComponent } from './novo-agendamento/novo-agendamento.component';
 
-import { AgendamentoService } from './agendamento.service';
-import { BarbeiroService } from './barbeiro.service';
+import { AgendamentoService } from './services/agendamento.service';
+import { BarbeiroService } from './services/barbeiro.service';
 
 import { TimePickerComponent } from './time-picker/time-picker.component';
 import {OverlayModule} from '@angular/cdk/overlay';
+
+import { Routes, RouterModule } from '@angular/router';
+
+/*const routes: Routes = [
+  { path: '', component: AgendamentoComponent, pathMatch: 'full' },
+  { path: '**', redirectTo: '', pathMatch: 'full' }
+];*/
 
 registerLocaleData(localePt);
 
@@ -49,6 +56,9 @@ registerLocaleData(localePt);
     TimePickerComponent
   ],
   imports: [
+    BrowserModule,
+    //RouterModule.forRoot(routes),
+    
     BrowserModule,
     BrowserAnimationsModule,
     FlexLayoutModule,

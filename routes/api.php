@@ -22,3 +22,4 @@ Route::get('/barbeiros', 'BarbeiroControlador@index');
 Route::get('/clientes', 'ClienteControlador@index');
 Route::get('/clientes/{nome}', 'ClienteControlador@buscar');
 Route::get('/agendamentos', 'AgendamentoControlador@index');
+Route::get('/agendamentos/novo/', 'AgendamentoControlador@store');

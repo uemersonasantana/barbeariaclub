@@ -17,7 +17,7 @@ class CreateClientesTable extends Migration
             $table->increments('id');
             $table->string('nome')->nullable();
             $table->string('sobrenome')->nullable();
-            $table->string('apelido');
+            $table->string('apelido')->nullable();
             $table->string('cpf',11)->nullable();
             $table->string('fone1')->nullable();
             $table->string('fone2')->nullable();

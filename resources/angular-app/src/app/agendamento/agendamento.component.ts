@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NovoAgendamentoComponent } from '../novo-agendamento/novo-agendamento.component';
-import {Agendamento} from '../agendamento/agendamento';
-import {AgendamentoService} from '../agendamento.service';
+import { Agendamento, AgendamentoService } from '../services/agendamento.service';
+import 'rxjs/Rx';
 
 export interface PeriodicElement {
   name: string;
@@ -31,6 +31,8 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class AgendamentoComponent  {
   
+  agendamentos: Agendamento[];
+  errorMessage: string;
   
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = ELEMENT_DATA;
@@ -40,22 +42,31 @@ export class AgendamentoComponent  {
     public dialog: MatDialog
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.getAgendamentos();
   }
 
+  getAgendamentos() {
+      this.AgendamentoService
+          .getAgendamentos()
+          .subscribe(
+              agendamentos => this.agendamentos = agendamentos,
+              error => this.errorMessage = <any>error
+          );
+  }
   NovoAgendamento() {
     const dialogRef = this.dialog.open(NovoAgendamentoComponent, 
     {
       width: '600px'
     });
-
-    dialogRef.afterClosed().subscribe(
+    
+    /*dialogRef.afterClosed().subscribe(
       (result) => {
         if (result) {
           console.log(result.agendamento);
-          //this.AgendamentoService.salvar(result.agendamento);
+          this.AgendamentoService.salvar(result.agendamento);
         }
       }
-    );
+    );*/
   }
 }

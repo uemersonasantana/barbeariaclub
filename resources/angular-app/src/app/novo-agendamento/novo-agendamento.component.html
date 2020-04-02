@@ -48,7 +48,7 @@
     <div fxLayout="row" fxLayoutAlign="space-between">
         <mat-form-field fxFlex="50">
             <mat-label>Barbeiro</mat-label>
-            <mat-select [(ngModel)]="dados.agendamento.barbeiro_id">
+            <mat-select>
                 <mat-option [value]=""></mat-option>
                 <mat-option *ngFor="let b of barbeiros" [value]="b.id">
                     {{b.nome}}
@@ -57,7 +57,7 @@
         </mat-form-field>
         <mat-form-field fxFlex="40">
             <mat-label>Serviço</mat-label>
-            <mat-select [(ngModel)]="dados.agendamento.descricao">
+            <mat-select>
                 <mat-option value=""></mat-option>
                 <mat-option value="BARBA">BARBA</mat-option>
                 <mat-option value="CABELO">CABELO</mat-option>
@@ -65,7 +65,16 @@
             </mat-select>
         </mat-form-field>
     </div>
+    <mat-chip-list aria-label="Fish selection">
+        <mat-chip>One fish</mat-chip>
+        <mat-chip>Two fish</mat-chip>
+        <mat-chip color="primary" selected>Primary fish</mat-chip>
+        <mat-chip color="accent" selected>Accent fish</mat-chip>
+      </mat-chip-list>
 
+    
+    <span>{{msg_erro}}</span>
+    
     <span>{{date | date:'medium'}}</span>
 </div>
 

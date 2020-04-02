@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {MatDialogRef} from '@angular/material/dialog';
-import {Agendamento} from '../agendamento/agendamento';
-import {Barbeiro} from '../barbeiro';
-import {BarbeiroService} from '../barbeiro.service';
+import {Barbeiro} from '../modal/barbeiro';
+import {BarbeiroService} from '../services/barbeiro.service';
+import {Agendamento,AgendamentoService} from '../services/agendamento.service';
 
 import { debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
 
@@ -15,11 +15,8 @@ import { debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
 })
 export class NovoAgendamentoComponent implements OnInit {
 
-  public barbeiros: Barbeiro[];
-  
-  public dados = {
-    agendamento: new Agendamento("",null,0,0)
-  };
+  barbeiros: Barbeiro[];
+  agendamento: Agendamento[];
 
   searchClientsCtrl = new FormControl();
   filteredClients: any;
@@ -28,7 +25,10 @@ export class NovoAgendamentoComponent implements OnInit {
   isOpen = false;
   date;
 
+  msg_erro:any;
+
   constructor(
+    private AgendamentoService: AgendamentoService,
     private BarbeiroService: BarbeiroService,
     private http: HttpClient,
     public dialogref: MatDialogRef<NovoAgendamentoComponent>
@@ -36,7 +36,7 @@ export class NovoAgendamentoComponent implements OnInit {
 
   ngOnInit(): void {
     this.barbeiros = this.BarbeiroService.barbeiros;
-    
+  
     this.searchClientsCtrl.valueChanges
       .pipe(
         debounceTime(500),
@@ -67,30 +67,41 @@ export class NovoAgendamentoComponent implements OnInit {
       });
     //console.log(this.barbeiros);
   }
-  
+
   public onSetDate(newDate: Date) {
     this.isOpen = false;
     this.date = newDate;
-    this.dados.agendamento.dataagendamento = newDate;
+    //this.agendamento.dataagendamento = newDate;
   }
 
+  
   salvar() {
-    this.dados.agendamento.empresa_id = 1;
-    this.dados.agendamento.user_id = 1;
-    this.dialogref.close(this.dados);
+    //this.agendamento.empresa_id = 1;
+    //this.agendamento.user_id = 1;
+    
+    //this.AgendamentoService.salvar(this.agendamento);
+    
+    
+    //console.log(this.AgendamentoService.onGetMsgError());
+    /*for(let e of Object.keys(error.error.msg) ) {
+        console.log(error.error.msg[e]);
+      }*/
+    //console.log(this.onGetMsgError());
+    
+    //this.dialogref.close(this.dados);
+    //this.onSetMsgError('asdas');
   }
-
   cancelar() {
     this.dialogref.close(null);
   }
 
   selecionarCliente(id) {
     if ( this.searchClientsCtrl.value != '' ) {
-      this.dados.agendamento.cliente_id = id;
+     // this.agendamento.cliente_id = id;
     }
   }
 
   limparIdCliente() {
-    this.dados.agendamento.cliente_id = 0;
+    //this.agendamento.cliente_id = 0;
   }
 }

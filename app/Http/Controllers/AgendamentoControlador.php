@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Agendamentos;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
+
 
 class AgendamentoControlador extends Controller
 {
@@ -14,7 +17,7 @@ class AgendamentoControlador extends Controller
      */
     public function index()
     {
-        return Agendamentos::all();
+        return response()->json(Agendamentos::all(),200);
     }
 
     /**
@@ -35,7 +38,25 @@ class AgendamentoControlador extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->dataagendamento!=null)
+            $request->dataagendamento = Carbon::createFromFormat('Y-m-d\TH:i:s.uO', $request->dataagendamento)->format('Y-m-d H:i');
+
+
+        $request->validate([
+            'cliente_id'      => 'required'
+            ,'dataagendamento'      => 'required|date'
+            ,'descricao'        => 'required'
+            ,'barbeiro_id'   => 'required'
+        ]);
+        
+        $agendamento = Agendamentos::create($request->all());
+
+
+        return (new Agendamentos($agendamento))
+                ->response()
+                ->setStatusCode(201);
+
+
     }
 
     /**
