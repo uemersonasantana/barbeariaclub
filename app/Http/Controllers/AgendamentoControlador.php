@@ -39,9 +39,8 @@ class AgendamentoControlador extends Controller
     public function store(Request $request)
     {
         if ($request->dataagendamento!=null)
-            $request->dataagendamento = Carbon::createFromFormat('Y-m-d\TH:i:s.uO', $request->dataagendamento)->format('Y-m-d H:i');
-
-
+            $request->merge(['dataagendamento' => Carbon::createFromFormat('Y-m-d\TH:i:s.uO', $request->dataagendamento)->format('Y-m-d H:i')]);
+        
         $request->validate([
             'cliente_id'      => 'required'
             ,'dataagendamento'      => 'required|date'
@@ -52,11 +51,7 @@ class AgendamentoControlador extends Controller
         $agendamento = Agendamentos::create($request->all());
 
 
-        return (new Agendamentos($agendamento))
-                ->response()
-                ->setStatusCode(201);
-
-
+        return response()->json($agendamento,200);
     }
 
     /**
