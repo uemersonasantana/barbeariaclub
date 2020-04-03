@@ -371,8 +371,8 @@ module.exports = exported;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/laravel/barbeariaclub/resources/angular-app/node_modules/@angular/material/prebuilt-themes/indigo-pink.css */"./node_modules/@angular/material/prebuilt-themes/indigo-pink.css");
-module.exports = __webpack_require__(/*! /var/www/laravel/barbeariaclub/resources/angular-app/src/styles.css */"./src/styles.css");
+__webpack_require__(/*! /var/www/laravel/angular-app/node_modules/@angular/material/prebuilt-themes/indigo-pink.css */"./node_modules/@angular/material/prebuilt-themes/indigo-pink.css");
+module.exports = __webpack_require__(/*! /var/www/laravel/angular-app/src/styles.css */"./src/styles.css");
 
 
 /***/ })

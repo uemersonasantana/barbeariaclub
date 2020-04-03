@@ -387,11 +387,11 @@
   /***/
   function _(module, exports, __webpack_require__) {
     __webpack_require__(
-    /*! /var/www/laravel/barbeariaclub/resources/angular-app/node_modules/@angular/material/prebuilt-themes/indigo-pink.css */
+    /*! /var/www/laravel/angular-app/node_modules/@angular/material/prebuilt-themes/indigo-pink.css */
     "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css");
 
     module.exports = __webpack_require__(
-    /*! /var/www/laravel/barbeariaclub/resources/angular-app/src/styles.css */
+    /*! /var/www/laravel/angular-app/src/styles.css */
     "./src/styles.css");
     /***/
   }
