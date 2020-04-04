@@ -19,8 +19,8 @@ class AgendamentoControlador extends Controller
     {
         $data = Agendamentos::with('barbeiro','cliente');
         
-        if ( $request->cliente_id ) {
-            $data->where('barbeiro_id', '=', $request->barbeiro_id);
+        if ( $request->cliente_id ) { 
+            $data->where('cliente_id', '=', $request->cliente_id);
         }
         if ( $request->barbeiro_id ) {
             $data->where('barbeiro_id', '=', $request->barbeiro_id);
@@ -47,6 +47,11 @@ class AgendamentoControlador extends Controller
                 break;
             // Dia
             case 5:
+                $request->validate([
+                    'dataInicial'      => 'required|date|date_format:Y-m-d|before:dataFinal',
+                    'dataFinal'        => 'required|date|date_format:Y-m-d|after:dataInicial',
+                ]);
+
                 // Tratando datas
                 $request->merge([
                     'dataInicial' => Carbon::createFromFormat('d/m/Y', $request->dataInicial)->format('Y-m-d'),
@@ -55,7 +60,7 @@ class AgendamentoControlador extends Controller
                 $data->whereBetween('dataagendamento', [$request->dataInicial,$request->dataFinal]);
                 break;
         }
-
+        
         return response()->json($data->get());
         
         
