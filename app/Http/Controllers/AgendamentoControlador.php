@@ -15,9 +15,51 @@ class AgendamentoControlador extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Agendamentos::all(),200);
+        $data = Agendamentos::with('barbeiro','cliente');
+        
+        if ( $request->cliente_id ) {
+            $data->where('barbeiro_id', '=', $request->barbeiro_id);
+        }
+        if ( $request->barbeiro_id ) {
+            $data->where('barbeiro_id', '=', $request->barbeiro_id);
+        }
+
+        //Carbon::now()->subDays(30);
+
+        switch ($request->tempo) {
+            // Dia
+            case 1:
+                $data->whereDay('dataagendamento', Carbon::now()->format('d'));
+                break;
+            // Semana
+            case 2:
+                $data->whereBetween('dataagendamento', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+                break;
+            // Mês
+            case 3:
+                $data->whereMonth('dataagendamento', Carbon::now()->format('m'));
+                break;
+            // 30 dias
+            case 4:
+                $data->whereBetween('dataagendamento', [Carbon::now()->subMonth(), Carbon::now()]);
+                break;
+            // Dia
+            case 5:
+                // Tratando datas
+                $request->merge([
+                    'dataInicial' => Carbon::createFromFormat('d/m/Y', $request->dataInicial)->format('Y-m-d'),
+                    'dataFinal' => Carbon::createFromFormat('d/m/Y', $request->dataFinal)->format('Y-m-d')
+                ]);
+                $data->whereBetween('dataagendamento', [$request->dataInicial,$request->dataFinal]);
+                break;
+        }
+
+        return response()->json($data->get());
+        
+        
+        //return response()->json(Agendamentos::with('barbeiro','cliente')->get(),200);
     }
 
     /**

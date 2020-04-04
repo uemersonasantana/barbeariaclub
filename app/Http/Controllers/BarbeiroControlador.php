@@ -14,7 +14,7 @@ class BarbeiroControlador extends Controller
      */
     public function index()
     {
-        return Barbeiro::all();
+        return Barbeiro::all(['id','nome']);
     }
 
     /**

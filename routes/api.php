@@ -17,6 +17,10 @@ Route::group([
     Route::post('me', 'AuthController@me');
     Route::post('sendPasswordResetLink', 'ResetPasswordController@sendEmail');
     Route::post('resetPassword', 'ChangePasswordController@process');
+
+    Route::get('/agendamentos/{cliente_id?}/{barbeiro_id?}/{tempo?}/{dataInicial?}/{dataFinal?}', 'AgendamentoControlador@index');
+    Route::get('/clientes', 'ClienteControlador@index');
+    Route::get('/barbeiros', 'BarbeiroControlador@index');
 });
 
 /*

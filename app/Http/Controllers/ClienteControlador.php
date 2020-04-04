@@ -14,14 +14,15 @@ class ClienteControlador extends Controller
      */
     public function index()
     {
-        return Cliente::all();
+        //response()->json(
+        return Cliente::all(['id','apelido','nome','sobrenome']);
     }
 
     public function buscar($nome)
     {
         return Cliente::where('nome', 'like', '%'.$nome.'%')
                             ->orWhere('sobrenome', 'like', '%'.$nome.'%')
-                            ->get();
+                            ->get(['id','apelido','nome','sobrenome']);
     }
 
     /**
