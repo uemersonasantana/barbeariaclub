@@ -19,6 +19,11 @@ Route::group([
     Route::post('resetPassword', 'ChangePasswordController@process');
 
     Route::get('/agendamentos/{cliente_id?}/{barbeiro_id?}/{tempo?}/{dataInicial?}/{dataFinal?}', 'AgendamentoControlador@index');
+    
+    Route::get('/agendamento/{id}', 'AgendamentoControlador@edit');
+    Route::post('/agendamento/editar/', 'AgendamentoControlador@update');
+    Route::post('/agendamento/novo/', 'AgendamentoControlador@store');
+    
     Route::get('/clientes', 'ClienteControlador@index');
     Route::get('/barbeiros', 'BarbeiroControlador@index');
 });

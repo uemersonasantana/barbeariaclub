@@ -19,7 +19,7 @@ class AgendamentoControlador extends Controller
     {
         $data = Agendamentos::with('barbeiro','cliente');
         
-        if ( $request->cliente_id ) { 
+        if ( $request->cliente_id ) {
             $data->where('cliente_id', '=', $request->cliente_id);
         }
         if ( $request->barbeiro_id ) {
@@ -85,8 +85,9 @@ class AgendamentoControlador extends Controller
      */
     public function store(Request $request)
     {
+        // Old Carbon::createFromFormat('Y-m-d\TH:i:s.uO', $request->dataagendamento)->format('Y-m-d H:i')])
         if ($request->dataagendamento!=null)
-            $request->merge(['dataagendamento' => Carbon::createFromFormat('Y-m-d\TH:i:s.uO', $request->dataagendamento)->format('Y-m-d H:i')]);
+            $request->merge(['dataagendamento' => Carbon::createFromFormat('d/m/Y H:i', $request->dataagendamento)->format('Y-m-d H:i:s')]);
         
         $request->validate([
             'cliente_id'      => 'required'
@@ -109,7 +110,7 @@ class AgendamentoControlador extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -120,7 +121,7 @@ class AgendamentoControlador extends Controller
      */
     public function edit($id)
     {
-        //
+        return Agendamentos::find($id);
     }
 
     /**
