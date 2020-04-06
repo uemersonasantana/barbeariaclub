@@ -48,15 +48,22 @@ class AgendamentoControlador extends Controller
             // Dia
             case 5:
                 $request->validate([
-                    'dataInicial'      => 'required|date|date_format:Y-m-d|before:dataFinal',
-                    'dataFinal'        => 'required|date|date_format:Y-m-d|after:dataInicial',
+                    'dataInicial'      => 'required',
+                    'dataFinal'        => 'required',
                 ]);
 
                 // Tratando datas
                 $request->merge([
-                    'dataInicial' => Carbon::createFromFormat('d/m/Y', $request->dataInicial)->format('Y-m-d'),
-                    'dataFinal' => Carbon::createFromFormat('d/m/Y', $request->dataFinal)->format('Y-m-d')
+                    'dataInicial' => Carbon::createFromFormat('j/n/Y', $request->dataInicial)->format('Y-m-d'),
+                    'dataFinal' => Carbon::createFromFormat('j/n/Y', $request->dataFinal)->format('Y-m-d')
                 ]);
+
+                $request->validate([
+                    'dataInicial'      => 'before:dataFinal',
+                    'dataFinal'        => 'after:dataInicial',
+                ]);
+
+                
                 $data->whereBetween('dataagendamento', [$request->dataInicial,$request->dataFinal]);
                 break;
         }
@@ -87,9 +94,9 @@ class AgendamentoControlador extends Controller
     {
         // Old Carbon::createFromFormat('Y-m-d\TH:i:s.uO', $request->dataagendamento)->format('Y-m-d H:i')])
         if ($request->dataagendamento!=null)
-            $request->merge(['dataagendamento' => Carbon::createFromFormat('d/m/Y H:i', $request->dataagendamento)->format('Y-m-d H:i:s')]);
+            $request->merge(['dataagendamento' => Carbon::createFromFormat('j-n-Y H:i', $request->dataagendamento)->format('Y-m-d H:i:s')]);
         
-        $request->validate([
+            $request->validate([
             'cliente_id'      => 'required'
             ,'dataagendamento'      => 'required|date'
             ,'descricao'        => 'required'

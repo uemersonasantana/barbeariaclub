@@ -22,12 +22,12 @@ Route::group([
     
     Route::get('/agendamento/{id}', 'AgendamentoControlador@edit');
     Route::post('/agendamento/editar/', 'AgendamentoControlador@update');
-    Route::post('/agendamento/novo/', 'AgendamentoControlador@store');
+    
     
     Route::get('/clientes', 'ClienteControlador@index');
     Route::get('/barbeiros', 'BarbeiroControlador@index');
 });
-
+Route::post('/agendamento/novo/', 'AgendamentoControlador@store');
 /*
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
