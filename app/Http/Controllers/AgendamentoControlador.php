@@ -78,9 +78,12 @@ class AgendamentoControlador extends Controller
 
     public function store(Request $request)
     {
+        $request->merge(['cliente_id' => 1]);
+        $request->merge(['dataagendamento' => '2020-04-15 06:02:00']);
+        //$request->request->remove('id');
         // Old Carbon::createFromFormat('Y-m-d\TH:i:s.uO', $request->dataagendamento)->format('Y-m-d H:i')])
-        if ($request->dataagendamento!=null)
-            $request->merge(['dataagendamento' => Carbon::createFromFormat('j-n-Y H:i', $request->dataagendamento)->format('Y-m-d H:i:s')]);
+        //if ($request->dataagendamento!=null)
+        //    $request->merge(['dataagendamento' => Carbon::createFromFormat('j-n-Y H:i', $request->dataagendamento)->format('Y-m-d H:i:s')]);
         
             $request->validate([
             'cliente_id'      => 'required'
@@ -112,6 +115,11 @@ class AgendamentoControlador extends Controller
 
     public function destroy($id)
     {
-        //
+        $agendamento = Agendamentos::find($id);
+        if (isset($agendamento)) {
+            $agendamento->delete();
+            return 204;
+        }
+        return response('Not Found!', 404);
     }
 }

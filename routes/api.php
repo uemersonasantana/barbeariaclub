@@ -19,10 +19,13 @@ Route::group([
 
 Route::middleware(['auth:api'])->group(function () {
     // Precisa estar autenticado e o e-mail ser gmail para conseguir acessar
-    Route::post('/agendamentos/{cliente_id?}/{barbeiro_id?}/{tempo?}/{dataInicial?}/{dataFinal?}', 'AgendamentoControlador@index');
-    Route::post('/agendamento/{id}', 'AgendamentoControlador@edit');
-    Route::post('/agendamento/editar/', 'AgendamentoControlador@update');
-    Route::post('/agendamento/novo/', 'AgendamentoControlador@store');
+    Route::post('/agendamentos/find/', 'AgendamentoControlador@index');
+    Route::post('/agendamento/edit/{id}', 'AgendamentoControlador@edit');
+    Route::post('/agendamento/update/', 'AgendamentoControlador@update');
+    Route::post('/agendamento/new/', 'AgendamentoControlador@store');
+    Route::delete('/agendamento/{id}', 'AgendamentoControlador@destroy');
+    
+    
     Route::post('/clientes', 'ClienteControlador@index');
     Route::post('/barbeiros', 'BarbeiroControlador@index');
 });
