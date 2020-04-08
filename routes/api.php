@@ -20,8 +20,7 @@ Route::group([
 Route::middleware(['auth:api'])->group(function () {
     // Precisa estar autenticado e o e-mail ser gmail para conseguir acessar
     Route::post('/agendamentos/find/', 'AgendamentoControlador@index');
-    Route::post('/agendamento/edit/{id}', 'AgendamentoControlador@edit');
-    Route::post('/agendamento/update/', 'AgendamentoControlador@update');
+    Route::post('/agendamento/edit/', 'AgendamentoControlador@update');
     Route::post('/agendamento/new/', 'AgendamentoControlador@store');
     Route::delete('/agendamento/{id}', 'AgendamentoControlador@destroy');
     

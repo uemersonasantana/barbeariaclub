@@ -15,6 +15,10 @@ class AgendamentoControlador extends Controller
     {
         $data = Agendamentos::with('barbeiro','cliente');
         
+        if ( $request->id ) {
+            $data->where('id', '=', $request->id);
+        }
+
         if ( $request->cliente_id ) {
             $data->where('cliente_id', '=', $request->cliente_id);
         }
@@ -78,24 +82,20 @@ class AgendamentoControlador extends Controller
 
     public function store(Request $request)
     {
-        $request->merge(['cliente_id' => 1]);
-        $request->merge(['dataagendamento' => '2020-04-15 06:02:00']);
-        //$request->request->remove('id');
-        // Old Carbon::createFromFormat('Y-m-d\TH:i:s.uO', $request->dataagendamento)->format('Y-m-d H:i')])
-        //if ($request->dataagendamento!=null)
-        //    $request->merge(['dataagendamento' => Carbon::createFromFormat('j-n-Y H:i', $request->dataagendamento)->format('Y-m-d H:i:s')]);
+        $request->request->add(['empresa_id' => 1,'user_id' => 1]);
+        if ($request->dataagendamento!=null)
+            $request->merge(['dataagendamento' => Carbon::createFromFormat('Y-m-d\TH:i:s.uO', $request->dataagendamento)->format('Y-m-d H:i:s')]);
         
             $request->validate([
             'cliente_id'      => 'required'
-            ,'dataagendamento'      => 'required|date'
+            ,'dataagendamento'      => 'required|date|after:today'
             ,'descricao'        => 'required'
             ,'barbeiro_id'   => 'required'
         ]);
         
         $agendamento = Agendamentos::create($request->all());
 
-
-        return response()->json($agendamento,200);
+        return response()->json(Agendamentos::with('barbeiro','cliente')->where('id', '=', $agendamento->id)->get(),200);
     }
 
     public function show($id)
@@ -103,14 +103,30 @@ class AgendamentoControlador extends Controller
         
     }
 
-    public function edit($id)
+    public function update(Request $request)
     {
-        return Agendamentos::find($id);
-    }
+        $request->merge(['dataagendamento' => Carbon::createFromFormat('Y-m-d\TH:i:s.uO', $request->dataagendamento)->format('Y-m-d H:i:s')]);
+            
+        
+            $request->validate([
+            'cliente_id'      => 'required'
+            ,'dataagendamento'      => 'required|date|after:today'
+            ,'descricao'        => 'required'
+            ,'barbeiro_id'   => 'required'
+        ]);
 
-    public function update(Request $request, $id)
-    {
-        //
+        
+        $agendamento = Agendamentos::find($request->id);
+        
+        $agendamento->id                    = $request->id;
+        $agendamento->descricao             = $request->descricao;
+        $agendamento->dataagendamento       = $request->dataagendamento;
+        $agendamento->cliente_id            = $request->cliente_id;
+        $agendamento->barbeiro_id           = $request->barbeiro_id;
+        
+        $agendamento->save();
+
+        return response()->json(Agendamentos::with('barbeiro','cliente')->where('id', '=', $agendamento->id)->get(),200);
     }
 
     public function destroy($id)
