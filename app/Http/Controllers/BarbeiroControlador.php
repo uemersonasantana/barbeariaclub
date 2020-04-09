@@ -14,17 +14,7 @@ class BarbeiroControlador extends Controller
      */
     public function index()
     {
-        return Barbeiro::all(['id','nome']);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Barbeiro::all(['id','nome','fone','email']);
     }
 
     /**
@@ -35,18 +25,17 @@ class BarbeiroControlador extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->request->add(['empresa_id' => 1,'user_id' => 1]);
+        
+        $request->validate([
+            'nome'      => 'required|unique:barbeiros'
+            ,'fone'     => 'required|unique:barbeiros'
+            ,'email'    => 'required|email|unique:barbeiros'
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        $barbeiro = Barbeiro::create($request->all());
+
+        return response()->json(Barbeiro::find($barbeiro->id),200);
     }
 
     /**
@@ -55,9 +44,9 @@ class BarbeiroControlador extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        return response()->json(Barbeiro::select('id','nome','fone','email')->where('id', $request->id)->get(),200);
     }
 
     /**
@@ -67,9 +56,24 @@ class BarbeiroControlador extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $request->request->add(['empresa_id' => 1,'user_id' => 1]);
+        
+        $request->validate([
+            'nome'      => 'required'
+            ,'email'        => 'email|nullable'
+        ]);
+
+        $barbeiro = Barbeiro::find($request->id);
+        
+        $barbeiro->nome     = $request->nome;
+        $barbeiro->fone     = $request->fone;
+        $barbeiro->email    = $request->email;
+        
+        $barbeiro->save();
+
+        return response()->json(Barbeiro::select('id','nome','fone','email')->where('id', $request->id)->get(),200);
     }
 
     /**
@@ -80,6 +84,11 @@ class BarbeiroControlador extends Controller
      */
     public function destroy($id)
     {
-        //
+        $barbeiro = Barbeiro::find($id);
+        if (isset($barbeiro)) {
+            $barbeiro->delete();
+            return 204;
+        }
+        return response('Not Found!', 404);
     }
 }

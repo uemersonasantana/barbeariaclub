@@ -3,14 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Agendamentos;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Validator;
+use App\Agendamentos;
+
 
 
 class AgendamentoControlador extends Controller
 {
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
         $data = Agendamentos::with('barbeiro','cliente');
@@ -68,25 +73,25 @@ class AgendamentoControlador extends Controller
                 break;
         }
         
-        return response()->json($data->get());
+        return response()->json($data->orderBy('dataagendamento','desc')->get());
         
         
         //return response()->json(Agendamentos::with('barbeiro','cliente')->get(),200);
     }
 
-    
-    public function create()
-    {
-        //
-    }
-
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
         $request->request->add(['empresa_id' => 1,'user_id' => 1]);
         if ($request->dataagendamento!=null)
             $request->merge(['dataagendamento' => Carbon::createFromFormat('Y-m-d\TH:i:s.uO', $request->dataagendamento)->format('Y-m-d H:i:s')]);
         
-            $request->validate([
+        $request->validate([
             'cliente_id'      => 'required'
             ,'dataagendamento'      => 'required|date|after:today'
             ,'descricao'        => 'required'
@@ -97,18 +102,18 @@ class AgendamentoControlador extends Controller
 
         return response()->json(Agendamentos::with('barbeiro','cliente')->where('id', '=', $agendamento->id)->get(),200);
     }
-
-    public function show($id)
-    {
-        
-    }
-
+    
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request)
     {
         $request->merge(['dataagendamento' => Carbon::createFromFormat('Y-m-d\TH:i:s.uO', $request->dataagendamento)->format('Y-m-d H:i:s')]);
-            
         
-            $request->validate([
+        $request->validate([
             'cliente_id'      => 'required'
             ,'dataagendamento'      => 'required|date|after:today'
             ,'descricao'        => 'required'
@@ -129,6 +134,13 @@ class AgendamentoControlador extends Controller
         return response()->json(Agendamentos::with('barbeiro','cliente')->where('id', '=', $agendamento->id)->get(),200);
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
         $agendamento = Agendamentos::find($id);

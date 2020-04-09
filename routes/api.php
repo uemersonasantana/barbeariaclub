@@ -24,9 +24,17 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('/agendamento/new/', 'AgendamentoControlador@store');
     Route::delete('/agendamento/{id}', 'AgendamentoControlador@destroy');
     
-    
-    Route::post('/clientes', 'ClienteControlador@index');
     Route::post('/barbeiros', 'BarbeiroControlador@index');
+    Route::post('/barbeiro/edit/', 'BarbeiroControlador@edit');
+    Route::post('/barbeiro/update/', 'BarbeiroControlador@update');
+    Route::post('/barbeiro/store/', 'BarbeiroControlador@store');
+    Route::delete('/barbeiro/{id}', 'BarbeiroControlador@destroy');
+
+    Route::post('/clientes', 'ClienteControlador@index');
+    Route::post('/cliente/edit/', 'ClienteControlador@edit');
+    Route::post('/cliente/update/', 'ClienteControlador@update');
+    Route::post('/cliente/store/', 'ClienteControlador@store');
+    Route::delete('/cliente/{id}', 'ClienteControlador@destroy');
 });
 
 /*

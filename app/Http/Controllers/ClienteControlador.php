@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use App\Cliente;
 
 class ClienteControlador extends Controller
@@ -14,8 +16,7 @@ class ClienteControlador extends Controller
      */
     public function index()
     {
-        //response()->json(
-        return Cliente::all(['id','apelido','nome','sobrenome']);
+        return Cliente::all(['id', 'nome', 'sobrenome', 'apelido', 'cpf', 'fone1', 'email']);
     }
 
     public function buscar($nome)
@@ -26,16 +27,6 @@ class ClienteControlador extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -43,18 +34,21 @@ class ClienteControlador extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->request->add(['empresa_id' => 1,'user_id' => 1]);
+        
+        // Verifica se já existe o mesmo cliente na tabela.
+        $sobrenome = $request->sobrenome;
+        $request->validate([
+            //'nome'      => 'required|uniqueFirstAndLastName:{$request->sobrenome}'
+            'nome'   => [
+                Rule::unique('clientes', 'nome')->where(function ($query) use ($sobrenome) {
+                    return $query->where('sobrenome', $sobrenome);
+                })]
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        $cliente = Cliente::create($request->all());
+
+        return response()->json(Cliente::select('id','nome','sobrenome')->where('id', $cliente->id)->get(),200);
     }
 
     /**
@@ -63,9 +57,9 @@ class ClienteControlador extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        return response()->json(Cliente::select('id','nome','sobrenome')->where('id', $request->id)->get(),200);
     }
 
     /**
@@ -75,9 +69,28 @@ class ClienteControlador extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $request->request->add(['empresa_id' => 1,'user_id' => 1]);
+        
+        // Verifica se já existe o mesmo cliente na tabela.
+        $sobrenome = $request->sobrenome;
+        $request->validate([
+            //'nome'      => 'required|uniqueFirstAndLastName:{$request->sobrenome}'
+            'nome'   => [
+                Rule::unique('clientes', 'nome')->where(function ($query) use ($sobrenome) {
+                    return $query->where('sobrenome', $sobrenome);
+                })]
+        ]);
+
+        $cliente = Cliente::find($request->id);
+        
+        $cliente->nome     = $request->nome;
+        $cliente->sobrenome     = $request->sobrenome;
+        
+        $cliente->save();
+
+        return response()->json(Cliente::select('id','nome','sobrenome')->where('id', $request->id)->get(),200);
     }
 
     /**
@@ -88,6 +101,11 @@ class ClienteControlador extends Controller
      */
     public function destroy($id)
     {
-        //
+        $cliente = Cliente::find($id);
+        if (isset($cliente)) {
+            $cliente->delete();
+            return 204;
+        }
+        return response('Not Found!', 404);
     }
 }
