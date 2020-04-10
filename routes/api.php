@@ -16,9 +16,12 @@ Route::group([
     Route::post('sendPasswordResetLink', 'ResetPasswordController@sendEmail');
     Route::post('resetPassword', 'ChangePasswordController@process');
 });
+Route::get('/municipios/{uf_id}', 'MunicipioControlador@index');
 
 Route::middleware(['auth:api'])->group(function () {
     // Precisa estar autenticado e o e-mail ser gmail para conseguir acessar
+    Route::post('/ufs', 'UfControlador@index');
+    
     Route::post('/agendamentos/find/', 'AgendamentoControlador@index');
     Route::post('/agendamento/edit/', 'AgendamentoControlador@update');
     Route::post('/agendamento/new/', 'AgendamentoControlador@store');

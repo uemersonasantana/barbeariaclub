@@ -3,12 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Cliente;
+use App\Endereco;
 
 class ClienteControlador extends Controller
 {
+    protected $regrasEndereco = [
+        'numero'       => 'required_without_all:complemento|numeric'
+        ,'complemento'  => 'required_without_all:numero'
+        ,'bairro'       => 'required_with:logradouro'
+        ,'uf_id'        => 'required_with:logradouro'
+        ,'municipio_id' => 'required_with:logradouro'
+        ,'cep'          => 'required_with:logradouro|numeric'];
+
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +27,7 @@ class ClienteControlador extends Controller
      */
     public function index()
     {
-        return Cliente::all(['id', 'nome', 'sobrenome', 'apelido', 'cpf', 'fone1', 'email']);
+        return Cliente::all(['id', 'nome', 'sobrenome', 'apelido', 'cpf', 'fone1', 'fone2', 'email']);
     }
 
     public function buscar($nome)
@@ -34,8 +45,16 @@ class ClienteControlador extends Controller
      */
     public function store(Request $request)
     {
-        $request->request->add(['empresa_id' => 1,'user_id' => 1]);
-        
+        $request->request->add(['empresa_id' => 1,'user_id' => Auth::user()->id]);
+
+        $request->validate([
+            'nome'          => 'required'
+            ,'cpf'          => 'nullable|cpf|unique:clientes'
+            ,'fone1'        => 'nullable|unique:clientes'
+            ,'fone2'        => 'nullable|unique:clientes'
+            ,'email'        => 'nullable|email|unique:clientes'
+        ]);
+
         // Verifica se já existe o mesmo cliente na tabela.
         $sobrenome = $request->sobrenome;
         $request->validate([
@@ -46,9 +65,67 @@ class ClienteControlador extends Controller
                 })]
         ]);
 
-        $cliente = Cliente::create($request->all());
+        if ( $request->endereco_id or !$request->endereco_id and !empty($request->logradouro) ) {
+            $request->validate($this->regrasEndereco);
+        }
+            
+        if ( !empty($request->logradouro) ) {
+            $endereco = new Endereco();
+            $endereco->logradouro     = $request->logradouro;
+            $endereco->numero         = $request->numero;
+            $endereco->complemento    = $request->complemento;
+            $endereco->bairro         = $request->bairro;
+            $endereco->municipio_id   = $request->municipio_id;
+            $endereco->cep            = $request->cep;
+            $endereco->user_id        = $request->user_id;
+            $endereco->save();
 
-        return response()->json(Cliente::select('id','nome','sobrenome')->where('id', $cliente->id)->get(),200);
+            $request->merge(['endereco_id' => $endereco->id]);
+        } else {
+            $request->merge(['endereco_id' => null]);
+        }        
+
+        $cliente = new Cliente();
+        $cliente->nome          = $request->nome;
+        $cliente->sobrenome     = $request->sobrenome;
+        $cliente->apelido       = $request->apelido;
+        $cliente->cpf           = $request->cpf;
+        $cliente->fone1         = $request->fone1;
+        $cliente->fone2         = $request->fone2;
+        $cliente->email         = $request->email;
+        $cliente->endereco_id   = $request->endereco_id;
+        $cliente->empresa_id    = $request->empresa_id;
+        $cliente->user_id       = $request->user_id;
+        $cliente->save();
+
+        $result = Cliente::
+            //with('endereco:id,logradouro,numero,complemento,bairro,cep')
+            leftJoin('enderecos as e', 'e.id', 'clientes.endereco_id')
+            ->leftJoin('municipios as m', 'm.id', 'e.municipio_id')
+            ->where('clientes.id', $cliente->id)->get(
+                [
+                    'clientes.id'
+                    ,'clientes.nome'
+                    ,'clientes.sobrenome'
+                    ,'clientes.apelido'
+                    ,'clientes.cpf'
+                    ,'clientes.fone1'
+                    ,'clientes.fone2'
+                    ,'clientes.email'
+                    ,'clientes.endereco_id'
+
+                    ,'e.logradouro'
+                    ,'e.numero'
+                    ,'e.complemento'
+                    ,'e.bairro'
+                    ,'e.municipio_id'
+                    ,'e.cep'
+
+                    ,'m.uf_id'
+
+                ]
+            );
+        return response()->json($result,200);
     }
 
     /**
@@ -59,7 +136,35 @@ class ClienteControlador extends Controller
      */
     public function edit(Request $request)
     {
-        return response()->json(Cliente::select('id','nome','sobrenome')->where('id', $request->id)->get(),200);
+        $result = Cliente::
+            //with('endereco:id,logradouro,numero,complemento,bairro,cep')
+            leftJoin('enderecos as e', 'e.id', 'clientes.endereco_id')
+            ->leftJoin('municipios as m', 'm.id', 'e.municipio_id')
+            ->where('clientes.id', $request->id)->get(
+                [
+                    'clientes.id'
+                    ,'clientes.nome'
+                    ,'clientes.sobrenome'
+                    ,'clientes.apelido'
+                    ,'clientes.cpf'
+                    ,'clientes.fone1'
+                    ,'clientes.fone2'
+                    ,'clientes.email'
+                    ,'clientes.endereco_id'
+
+                    ,'e.logradouro'
+                    ,'e.numero'
+                    ,'e.complemento'
+                    ,'e.bairro'
+                    ,'e.municipio_id'
+                    ,'e.cep'
+
+                    ,'m.uf_id'
+                    ,'m.nome as municipio_nome'
+
+                ]
+            );
+        return response()->json($result,200);
     }
 
     /**
@@ -71,26 +176,101 @@ class ClienteControlador extends Controller
      */
     public function update(Request $request)
     {
-        $request->request->add(['empresa_id' => 1,'user_id' => 1]);
-        
+        $request->request->add(['empresa_id' => 1,'user_id' => Auth::user()->id]);
+
+        $request->validate([
+            'nome'          => 'required'
+            ,'cpf'          => 'nullable|cpf|unique:clientes,cpf,'.$request->id
+            ,'fone1'        => 'nullable|unique:clientes,fone1,'.$request->id
+            ,'fone2'        => 'nullable|unique:clientes,fone2,'.$request->id
+            ,'email'        => 'nullable|email|unique:clientes,email,'.$request->id
+        ]);
+
         // Verifica se já existe o mesmo cliente na tabela.
         $sobrenome = $request->sobrenome;
+        $id =  $request->id;
         $request->validate([
             //'nome'      => 'required|uniqueFirstAndLastName:{$request->sobrenome}'
             'nome'   => [
-                Rule::unique('clientes', 'nome')->where(function ($query) use ($sobrenome) {
-                    return $query->where('sobrenome', $sobrenome);
-                })]
+                Rule::unique('clientes', 'nome')
+                    ->where(function ($query) use ($sobrenome,$id) {
+                        return $query->where('sobrenome', $sobrenome)->where('id', '!=' , $id);
+                    })
+                ]
         ]);
+        
+        if ( $request->endereco_id or !$request->endereco_id and !empty($request->logradouro) ) {
+            $request->validate($this->regrasEndereco);
+        }
+
+        if ( $request->endereco_id ) {
+            $endereco = Endereco::find($request->endereco_id);
+            $endereco->logradouro     = $request->logradouro;
+            $endereco->numero         = $request->numero;
+            $endereco->complemento    = $request->complemento;
+            $endereco->bairro         = $request->bairro;
+            $endereco->municipio_id   = $request->municipio_id;
+            $endereco->cep            = $request->cep;
+            $endereco->user_id        = $request->user_id;
+            $endereco->save();
+        } else if ( !$request->endereco_id and !empty($request->logradouro) ) {
+            $endereco = new Endereco();
+            $endereco->logradouro     = $request->logradouro;
+            $endereco->numero         = $request->numero;
+            $endereco->complemento    = $request->complemento;
+            $endereco->bairro         = $request->bairro;
+            $endereco->municipio_id   = $request->municipio_id;
+            $endereco->cep            = $request->cep;
+            $endereco->user_id        = $request->user_id;
+            $endereco->save();
+
+            $request->merge(['endereco_id' => $endereco->id]);
+        } else {
+            $request->merge(['endereco_id' => null]);
+        }
 
         $cliente = Cliente::find($request->id);
-        
-        $cliente->nome     = $request->nome;
+        $cliente->nome          = $request->nome;
         $cliente->sobrenome     = $request->sobrenome;
-        
+        $cliente->apelido       = $request->apelido;
+        $cliente->cpf           = $request->cpf;
+        $cliente->fone1         = $request->fone1;
+        $cliente->fone2         = $request->fone2;
+        $cliente->email         = $request->email;
+        $cliente->endereco_id   = $request->endereco_id;
+        $cliente->empresa_id    = $request->empresa_id;
+        $cliente->user_id       = $request->user_id;
         $cliente->save();
 
-        return response()->json(Cliente::select('id','nome','sobrenome')->where('id', $request->id)->get(),200);
+        $result = Cliente::
+            //with('endereco:id,logradouro,numero,complemento,bairro,cep')
+            leftJoin('enderecos as e', 'e.id', 'clientes.endereco_id')
+            ->leftJoin('municipios as m', 'm.id', 'e.municipio_id')
+            ->where('clientes.id', $cliente->id)->get(
+                [
+                    'clientes.id'
+                    ,'clientes.nome'
+                    ,'clientes.sobrenome'
+                    ,'clientes.apelido'
+                    ,'clientes.cpf'
+                    ,'clientes.fone1'
+                    ,'clientes.fone2'
+                    ,'clientes.email'
+                    ,'clientes.endereco_id'
+
+                    ,'e.logradouro'
+                    ,'e.numero'
+                    ,'e.complemento'
+                    ,'e.bairro'
+                    ,'e.municipio_id'
+                    ,'e.cep'
+
+                    ,'m.uf_id'
+                    ,'m.nome as municipio_nome'
+
+                ]
+            );
+        return response()->json($result,200);
     }
 
     /**
