@@ -54,4 +54,10 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('/cliente/update/', 'ClienteControlador@update');
     Route::post('/cliente/store/', 'ClienteControlador@store');
     Route::delete('/cliente/{id}', 'ClienteControlador@destroy');
+
+    Route::post('/usuarios', 'UsuarioControlador@index');
+    Route::post('/usuario/edit/', 'UsuarioControlador@edit');
+    Route::post('/usuario/update/', 'UsuarioControlador@update');
+    Route::post('/usuario/store/', 'UsuarioControlador@store');
+    Route::delete('/usuario/{id}', 'UsuarioControlador@destroy');
 });
