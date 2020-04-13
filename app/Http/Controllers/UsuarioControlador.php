@@ -31,12 +31,13 @@ class UsuarioControlador extends Controller
         $request->validate([
             'name'      => 'required'
             ,'email'    => 'email|unique:users'
+            ,'password'        => 'required|confirmed'
         ]);
 
         $User = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
         ]);
 
         $result = User::where('users.id', $User->id)->get(
@@ -96,7 +97,7 @@ class UsuarioControlador extends Controller
         $request->validate([
             'name'       => 'required'
             ,'email'     => 'email|unique:users,email,'.$request->id
-            ,'password'  => 'required|confirmed'
+            ,'password'  => 'required_if:editPassword,==,true|confirmed'
         ]);
         
         $User = User::find($request->id);
