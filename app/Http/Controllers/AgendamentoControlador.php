@@ -71,6 +71,10 @@ class AgendamentoControlador extends Controller
                 
                 $data->whereBetween('dataagendamento', [$request->dataInicial,$request->dataFinal]);
                 break;
+            // 20 Dias
+            case 6:
+                $data->whereBetween('dataagendamento', [Carbon::now()->subDays(20), Carbon::now()]);
+                break;
         }
         
         return response()->json($data->orderBy('dataagendamento','desc')->get());
