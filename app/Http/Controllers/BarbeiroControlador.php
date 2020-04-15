@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Barbeiro;
 
 class BarbeiroControlador extends Controller
@@ -35,7 +36,7 @@ class BarbeiroControlador extends Controller
 
         $barbeiro = Barbeiro::create($request->all());
 
-        return response()->json(Barbeiro::find($barbeiro->id),200);
+        return response()->json(Barbeiro::select('id','nome','fone','email', DB::raw("'novo' as modo"))->where('id', $barbeiro->id)->get(),200);
     }
 
     /**
@@ -73,7 +74,7 @@ class BarbeiroControlador extends Controller
         
         $barbeiro->save();
 
-        return response()->json(Barbeiro::select('id','nome','fone','email')->where('id', $request->id)->get(),200);
+        return response()->json(Barbeiro::select('id','nome','fone','email', DB::raw("'editar' as modo"))->where('id', $request->id)->get(),200);
     }
 
     /**

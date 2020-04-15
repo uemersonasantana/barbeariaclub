@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use App\Cliente;
 use App\Endereco;
@@ -123,6 +123,7 @@ class ClienteControlador extends Controller
 
                     ,'m.uf_id'
 
+                    ,DB::raw("'novo' as modo")
                 ]
             );
         return response()->json($result,200);
@@ -268,6 +269,7 @@ class ClienteControlador extends Controller
                     ,'m.uf_id'
                     ,'m.nome as municipio_nome'
 
+                    ,DB::raw("'editar' as modo")
                 ]
             );
         return response()->json($result,200);

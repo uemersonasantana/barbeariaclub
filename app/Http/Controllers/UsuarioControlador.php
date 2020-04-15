@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use App\User;
 
 class UsuarioControlador extends Controller
@@ -45,6 +44,8 @@ class UsuarioControlador extends Controller
                     'users.id'
                     ,'users.name'
                     ,'users.email'
+                    
+                    ,DB::raw("'novo' as modo")
                 ]
             );
         
@@ -108,7 +109,7 @@ class UsuarioControlador extends Controller
         
         $User->save();
 
-        return response()->json(User::where('id', $User->id)->get(),200);
+        return response()->json(User::where('id', $User->id)->get(['*',DB::raw("'editar' as modo")]),200);
     }
 
     /**

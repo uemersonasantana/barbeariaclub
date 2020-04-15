@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Agendamentos;
-
-
 
 class AgendamentoControlador extends Controller
 {
@@ -73,14 +72,11 @@ class AgendamentoControlador extends Controller
                 break;
             // 20 Dias
             case 6:
-                $data->whereBetween('dataagendamento', [Carbon::now()->subDays(20), Carbon::now()]);
+                $data->whereDate('dataagendamento', Carbon::now()->subDays(20));
                 break;
         }
         
         return response()->json($data->orderBy('dataagendamento','desc')->get());
-        
-        
-        //return response()->json(Agendamentos::with('barbeiro','cliente')->get(),200);
     }
 
     /**
@@ -104,7 +100,7 @@ class AgendamentoControlador extends Controller
         
         $agendamento = Agendamentos::create($request->all());
 
-        return response()->json(Agendamentos::with('barbeiro','cliente')->where('id', '=', $agendamento->id)->get(),200);
+        return response()->json(Agendamentos::with('barbeiro','cliente')->where('id', '=', $agendamento->id)->get(['*',DB::raw("'novo' as modo")]),200);
     }
     
     /**
@@ -135,7 +131,7 @@ class AgendamentoControlador extends Controller
         
         $agendamento->save();
 
-        return response()->json(Agendamentos::with('barbeiro','cliente')->where('id', '=', $agendamento->id)->get(),200);
+        return response()->json(Agendamentos::with('barbeiro','cliente')->where('id', '=', $agendamento->id)->get(['*',DB::raw("'editar' as modo")]),200);
     }
 
     /**
