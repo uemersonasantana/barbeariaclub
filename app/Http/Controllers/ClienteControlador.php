@@ -30,10 +30,10 @@ class ClienteControlador extends Controller
         return Cliente::all(['id', 'nome', 'sobrenome', 'apelido', 'cpf', 'fone1', 'fone2', 'email']);
     }
 
-    public function buscar($nome)
+    public function buscar($q)
     {
-        return Cliente::where('nome', 'like', '%'.$nome.'%')
-                            ->orWhere('sobrenome', 'like', '%'.$nome.'%')
+        return Cliente::where('nome', 'like', '%'.$q.'%')
+                            ->orWhere('sobrenome', 'like', '%'.$q.'%')
                             ->get(['id','apelido','nome','sobrenome']);
     }
 

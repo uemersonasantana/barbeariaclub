@@ -89,7 +89,7 @@ class AgendamentoControlador extends Controller
     {
         $request->request->add(['empresa_id' => 1,'user_id' => 1]);
         if ($request->dataagendamento!=null)
-            $request->merge(['dataagendamento' => Carbon::createFromFormat('Y-m-d\TH:i:s.uO', $request->dataagendamento)->format('Y-m-d H:i:s')]);
+            $request->merge(['dataagendamento' => Carbon::createFromFormat('Y-m-d\TH:i:s.uO', $request->dataagendamento)->setTimezone('America/Sao_Paulo')->format('Y-m-d H:i:s')]);
         
         $request->validate([
             'cliente_id'      => 'required'
@@ -111,7 +111,7 @@ class AgendamentoControlador extends Controller
      */
     public function update(Request $request)
     {
-        $request->merge(['dataagendamento' => Carbon::createFromFormat('Y-m-d\TH:i:s.uO', $request->dataagendamento)->format('Y-m-d H:i:s')]);
+        $request->merge(['dataagendamento' => Carbon::createFromFormat('Y-m-d\TH:i:s.uO', $request->dataagendamento)->setTimezone('America/Sao_Paulo')->format('Y-m-d H:i:s')]);
         
         $request->validate([
             'cliente_id'      => 'required'

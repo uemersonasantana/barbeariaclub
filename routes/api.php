@@ -49,6 +49,8 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('/barbeiro/store/', 'BarbeiroControlador@store');
     Route::delete('/barbeiro/{id}', 'BarbeiroControlador@destroy');
 
+    Route::get('/clientes/buscar/{q}', 'ClienteControlador@buscar');
+
     Route::post('/clientes', 'ClienteControlador@index');
     Route::post('/cliente/edit/', 'ClienteControlador@edit');
     Route::post('/cliente/update/', 'ClienteControlador@update');
