@@ -151,6 +151,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       path: '',
       canActivate: [_services_before_login_service__WEBPACK_IMPORTED_MODULE_6__["BeforeLoginService"]],
       children: [{
+        path: '',
+        component: _components_login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"]
+      }, {
         path: 'login',
         component: _components_login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"]
       }, {
@@ -7885,7 +7888,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _classCallCheck(this, GlobalConstants);
     };
 
-    GlobalConstants.API_URL = 'http://localhost:8000/api';
+    GlobalConstants.API_URL = 'http://barbeariaclub.local/api';
     /***/
   },
 
@@ -8043,7 +8046,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             tempo: 6
           };
 
-          this._http.post(API_URL + '/agendamentos/find/', tempForm).subscribe(function (data) {
+          this._http.post(API_URL + '/agendamentos/find', tempForm).subscribe(function (data) {
             var _iterator3 = _createForOfIteratorHelper(data),
                 _step3;
 
@@ -8109,7 +8112,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getAgendamentos",
         value: function getAgendamentos(params) {
-          return this._http.post(API_URL + '/agendamentos/find/', params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (response) {
+          return this._http.post(API_URL + '/agendamentos/find', params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (response) {
             return response;
           }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             return Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["throwError"])(error);

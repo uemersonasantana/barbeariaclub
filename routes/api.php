@@ -38,28 +38,28 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('/ufs', 'UfControlador@index');
     Route::get('/municipios/{uf_id}', 'MunicipioControlador@index');
     
-    Route::post('/agendamentos/find/', 'AgendamentoControlador@index');
-    Route::post('/agendamento/edit/', 'AgendamentoControlador@update');
-    Route::post('/agendamento/new/', 'AgendamentoControlador@store');
+    Route::post('/agendamentos/find', 'AgendamentoControlador@index');
+    Route::post('/agendamento/edit', 'AgendamentoControlador@update');
+    Route::post('/agendamento/new', 'AgendamentoControlador@store');
     Route::delete('/agendamento/{id}', 'AgendamentoControlador@destroy');
     
     Route::post('/barbeiros', 'BarbeiroControlador@index');
-    Route::post('/barbeiro/edit/', 'BarbeiroControlador@edit');
-    Route::post('/barbeiro/update/', 'BarbeiroControlador@update');
-    Route::post('/barbeiro/store/', 'BarbeiroControlador@store');
+    Route::post('/barbeiro/edit', 'BarbeiroControlador@edit');
+    Route::post('/barbeiro/update', 'BarbeiroControlador@update');
+    Route::post('/barbeiro/store', 'BarbeiroControlador@store');
     Route::delete('/barbeiro/{id}', 'BarbeiroControlador@destroy');
 
     Route::get('/clientes/buscar/{q}', 'ClienteControlador@buscar');
 
     Route::post('/clientes', 'ClienteControlador@index');
-    Route::post('/cliente/edit/', 'ClienteControlador@edit');
-    Route::post('/cliente/update/', 'ClienteControlador@update');
-    Route::post('/cliente/store/', 'ClienteControlador@store');
+    Route::post('/cliente/edit', 'ClienteControlador@edit');
+    Route::post('/cliente/update', 'ClienteControlador@update');
+    Route::post('/cliente/store', 'ClienteControlador@store');
     Route::delete('/cliente/{id}', 'ClienteControlador@destroy');
 
     Route::post('/usuarios', 'UsuarioControlador@index');
-    Route::post('/usuario/edit/', 'UsuarioControlador@edit');
-    Route::post('/usuario/update/', 'UsuarioControlador@update');
-    Route::post('/usuario/store/', 'UsuarioControlador@store');
+    Route::post('/usuario/edit', 'UsuarioControlador@edit');
+    Route::post('/usuario/update', 'UsuarioControlador@update');
+    Route::post('/usuario/store', 'UsuarioControlador@store');
     Route::delete('/usuario/{id}', 'UsuarioControlador@destroy');
 });

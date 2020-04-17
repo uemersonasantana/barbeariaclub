@@ -61,6 +61,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const appRoutes = [
     { path: '', canActivate: [_services_before_login_service__WEBPACK_IMPORTED_MODULE_6__["BeforeLoginService"]], children: [
+            { path: '', component: _components_login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"] },
             { path: 'login', component: _components_login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"] },
             { path: 'signup', component: _components_signup_signup_component__WEBPACK_IMPORTED_MODULE_3__["SignupComponent"] },
             { path: 'request-password-reset', component: _components_password_request_reset_request_reset_component__WEBPACK_IMPORTED_MODULE_4__["RequestResetComponent"] },
@@ -3890,7 +3891,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GlobalConstants", function() { return GlobalConstants; });
 class GlobalConstants {
 }
-GlobalConstants.API_URL = 'http://localhost:8000/api';
+GlobalConstants.API_URL = 'http://barbeariaclub.local/api';
 
 
 /***/ }),
@@ -3966,7 +3967,7 @@ class AgendamentoService {
         let tempForm = {
             tempo: 6
         };
-        this._http.post(API_URL + '/agendamentos/find/', tempForm).subscribe((data) => {
+        this._http.post(API_URL + '/agendamentos/find', tempForm).subscribe((data) => {
             for (let d of data) {
                 //console.log(d.cliente.sobrenome.length)
                 let sobrenome = '';
@@ -4012,7 +4013,7 @@ class AgendamentoService {
       * }
       */
     getAgendamentos(params) {
-        return this._http.post(API_URL + '/agendamentos/find/', params)
+        return this._http.post(API_URL + '/agendamentos/find', params)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((response) => {
             return response;
         }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(error => {
