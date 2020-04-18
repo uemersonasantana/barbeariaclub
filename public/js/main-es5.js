@@ -3197,7 +3197,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             id: data.id
           };
 
-          this._http.post(API_URL + '/agendamentos/find/', formID).subscribe(function (agendamento) {
+          this._http.post(API_URL + '/agendamentos/find', formID).subscribe(function (agendamento) {
             _this12.agendamento = [];
 
             var _iterator2 = _createForOfIteratorHelper(agendamento),
@@ -3781,7 +3781,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             id: data.id
           };
 
-          this._http.post(API_URL + '/barbeiro/edit/', formID).subscribe(function (barbeiro) {
+          this._http.post(API_URL + '/barbeiro/edit', formID).subscribe(function (barbeiro) {
             _this18.barbeiro = barbeiro;
           });
         } else {
@@ -4197,7 +4197,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             id: data.id
           };
 
-          this._http.post(API_URL + '/cliente/edit/', formID).subscribe(function (cliente) {
+          this._http.post(API_URL + '/cliente/edit', formID).subscribe(function (cliente) {
             _this20.cliente = cliente;
 
             if (cliente[0]['endereco_id']) {
@@ -4994,7 +4994,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             id: data.id
           };
 
-          this._http.post(API_URL + '/usuario/edit/', formID).subscribe(function (usuario) {
+          this._http.post(API_URL + '/usuario/edit', formID).subscribe(function (usuario) {
             _this23.usuario = usuario;
           });
         } else {

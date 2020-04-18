@@ -1612,7 +1612,7 @@ class CeAgendamentoComponent {
             let formID = {
                 id: data.id
             };
-            this._http.post(API_URL + '/agendamentos/find/', formID).subscribe((agendamento) => {
+            this._http.post(API_URL + '/agendamentos/find', formID).subscribe((agendamento) => {
                 this.agendamento = [];
                 for (let p of agendamento) {
                     let c = p.cliente;
@@ -1907,7 +1907,7 @@ class CeBarbeiroComponent {
             let formID = {
                 id: data.id
             };
-            this._http.post(API_URL + '/barbeiro/edit/', formID).subscribe((barbeiro) => {
+            this._http.post(API_URL + '/barbeiro/edit', formID).subscribe((barbeiro) => {
                 this.barbeiro = barbeiro;
             });
         }
@@ -2120,7 +2120,7 @@ class CeClienteComponent {
             let formID = {
                 id: data.id
             };
-            this._http.post(API_URL + '/cliente/edit/', formID).subscribe((cliente) => {
+            this._http.post(API_URL + '/cliente/edit', formID).subscribe((cliente) => {
                 this.cliente = cliente;
                 if (cliente[0]['endereco_id']) {
                     this.endereco = [
@@ -2517,7 +2517,7 @@ class CeUsuarioComponent {
             let formID = {
                 id: data.id
             };
-            this._http.post(API_URL + '/usuario/edit/', formID).subscribe((usuario) => {
+            this._http.post(API_URL + '/usuario/edit', formID).subscribe((usuario) => {
                 this.usuario = usuario;
             });
         }
