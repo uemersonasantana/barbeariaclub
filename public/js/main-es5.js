@@ -250,9 +250,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _components_navbar_navbar_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-    /*! ./components/navbar/navbar.component */
-    "./src/app/components/navbar/navbar.component.ts");
+    var _services_auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    /*! ./services/auth.service */
+    "./src/app/services/auth.service.ts");
     /* harmony import */
 
 
@@ -262,18 +262,35 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var ng_snotify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+    var _components_navbar_navbar_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+    /*! ./components/navbar/navbar.component */
+    "./src/app/components/navbar/navbar.component.ts");
+    /* harmony import */
+
+
+    var ng_snotify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
     /*! ng-snotify */
     "./node_modules/ng-snotify/__ivy_ngcc__/fesm2015/ng-snotify.js");
 
-    var AppComponent = function AppComponent() {
+    var AppComponent = function AppComponent(Auth, router) {
+      var _this = this;
+
       _classCallCheck(this, AppComponent);
 
+      this.Auth = Auth;
+      this.router = router;
       this.title = 'angular-app';
+      this.Auth.authStatus.subscribe(function (value) {
+        return _this.loggedIn = value;
+      });
+
+      if (this.loggedIn) {
+        this.router.navigateByUrl('/agendamentos');
+      }
     };
 
     AppComponent.ɵfac = function AppComponent_Factory(t) {
-      return new (t || AppComponent)();
+      return new (t || AppComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]));
     };
 
     AppComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({
@@ -295,7 +312,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](3, "ng-snotify");
         }
       },
-      directives: [_components_navbar_navbar_component__WEBPACK_IMPORTED_MODULE_1__["NavbarComponent"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterOutlet"], ng_snotify__WEBPACK_IMPORTED_MODULE_3__["SnotifyComponent"]],
+      directives: [_components_navbar_navbar_component__WEBPACK_IMPORTED_MODULE_3__["NavbarComponent"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterOutlet"], ng_snotify__WEBPACK_IMPORTED_MODULE_4__["SnotifyComponent"]],
       styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2FwcC5jb21wb25lbnQuY3NzIn0= */"]
     });
     /*@__PURE__*/
@@ -308,7 +325,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           templateUrl: './app.component.html',
           styleUrls: ['./app.component.css']
         }]
-      }], null, null);
+      }], function () {
+        return [{
+          type: _services_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"]
+        }, {
+          type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]
+        }];
+      }, null);
     })();
     /***/
 
@@ -723,7 +746,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(AuthInterceptor, [{
         key: "intercept",
         value: function intercept(req, next) {
-          var _this = this;
+          var _this2 = this;
 
           var token = localStorage.getItem('token'); //const lanaguageInj= this.injector.get(RefreshToken2);
 
@@ -740,13 +763,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               // Redireciona para login quando expirar a sessão.
               console.log('foi22');
 
-              _this.Token.remove();
+              _this2.Token.remove();
 
-              _this.Auth.changeAuthStatus(false);
+              _this2.Auth.changeAuthStatus(false);
 
-              _this.dialogRef.closeAll();
+              _this2.dialogRef.closeAll();
 
-              _this.router.navigateByUrl('/login');
+              _this2.router.navigateByUrl('/login');
             }
 
             return rxjs_Observable__WEBPACK_IMPORTED_MODULE_1__["Observable"]["throw"](err);
@@ -1281,7 +1304,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipeBind2"](2, 1, row_r67.dataagendamento, "h:mm"));
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipeBind2"](2, 1, row_r67.dataagendamento, "HH:mm"));
       }
     }
 
@@ -1481,13 +1504,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       var _super = _createSuper(CustomDatepickerI18n);
 
       function CustomDatepickerI18n(_i18n) {
-        var _this2;
+        var _this3;
 
         _classCallCheck(this, CustomDatepickerI18n);
 
-        _this2 = _super.call(this);
-        _this2._i18n = _i18n;
-        return _this2;
+        _this3 = _super.call(this);
+        _this3._i18n = _i18n;
+        return _this3;
       }
 
       _createClass(CustomDatepickerI18n, [{
@@ -1545,13 +1568,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       var _super2 = _createSuper(CustomAdapter);
 
       function CustomAdapter() {
-        var _this3;
+        var _this4;
 
         _classCallCheck(this, CustomAdapter);
 
-        _this3 = _super2.apply(this, arguments);
-        _this3.DELIMITER = '-';
-        return _this3;
+        _this4 = _super2.apply(this, arguments);
+        _this4.DELIMITER = '-';
+        return _this4;
       }
 
       _createClass(CustomAdapter, [{
@@ -1607,13 +1630,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       var _super3 = _createSuper(CustomDateParserFormatter);
 
       function CustomDateParserFormatter() {
-        var _this4;
+        var _this5;
 
         _classCallCheck(this, CustomDateParserFormatter);
 
-        _this4 = _super3.apply(this, arguments);
-        _this4.DELIMITER = '/';
-        return _this4;
+        _this5 = _super3.apply(this, arguments);
+        _this5.DELIMITER = '/';
+        return _this5;
       }
 
       _createClass(CustomDateParserFormatter, [{
@@ -1711,26 +1734,26 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(AgendamentoComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this5 = this;
+          var _this6 = this;
 
           this.BarbeiroService.getBarbeiros().subscribe(function (data) {
-            _this5.barbeiros = data;
+            _this6.barbeiros = data;
           });
           this.AgendamentoService.getAgendamentos().subscribe(function (data) {
-            _this5.isLoading = false;
-            _this5.agendamentos = data; // Assign the data to the data source for the table to render
+            _this6.isLoading = false;
+            _this6.agendamentos = data; // Assign the data to the data source for the table to render
 
-            _this5.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_7__["MatTableDataSource"](_this5.agendamentos);
-            _this5.dataSource.paginator = _this5.paginator;
+            _this6.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_7__["MatTableDataSource"](_this6.agendamentos);
+            _this6.dataSource.paginator = _this6.paginator;
 
-            _this5.sort.sort({
-              id: 'id',
+            _this6.sort.sort({
+              id: 'dataagendamento',
               start: 'desc'
             });
 
-            _this5.dataSource.sort = _this5.sort;
+            _this6.dataSource.sort = _this6.sort;
           }, function (error) {
-            return _this5.isLoading = false;
+            return _this6.isLoading = false;
           });
         }
       }, {
@@ -1743,17 +1766,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getServerResponseClientes",
         value: function getServerResponseClientes(event) {
-          var _this6 = this;
+          var _this7 = this;
 
           this.isLoadingResult = true;
           this.ClienteService.getBuscaClientes(event).subscribe(function (data) {
             if (data[0]['nome'] == undefined) {
-              _this6.clientes = [];
+              _this7.clientes = [];
             } else {
-              _this6.clientes = data;
+              _this7.clientes = data;
             }
 
-            _this6.isLoadingResult = false;
+            _this7.isLoadingResult = false;
           });
         }
       }, {
@@ -1809,10 +1832,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getAgendamentos",
         value: function getAgendamentos(value) {
-          var _this7 = this;
+          var _this8 = this;
 
           this.AgendamentoService.getAgendamentos(value).subscribe(function (agendamentos) {
-            _this7.agendamentos = [];
+            _this8.agendamentos = [];
 
             var _iterator = _createForOfIteratorHelper(agendamentos),
                 _step;
@@ -1821,7 +1844,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               for (_iterator.s(); !(_step = _iterator.n()).done;) {
                 var t = _step.value;
 
-                _this7.agendamentos.push(t);
+                _this8.agendamentos.push(t);
               } // Assign the data to the data source for the table to render
 
             } catch (err) {
@@ -1830,11 +1853,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               _iterator.f();
             }
 
-            _this7.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_7__["MatTableDataSource"](_this7.agendamentos);
-            _this7.dataSource.paginator = _this7.paginator;
-            _this7.dataSource.sort = _this7.sort;
+            _this8.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_7__["MatTableDataSource"](_this8.agendamentos);
+            _this8.dataSource.paginator = _this8.paginator;
+            _this8.dataSource.sort = _this8.sort;
           }, function (error) {
-            return _this7.handleError(error);
+            return _this8.handleError(error);
           });
         }
       }, {
@@ -1929,7 +1952,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "openModal",
         value: function openModal(id) {
-          var _this8 = this;
+          var _this9 = this;
 
           var dialogConfig = new _angular_material_dialog__WEBPACK_IMPORTED_MODULE_2__["MatDialogConfig"]();
           dialogConfig.data = {
@@ -1939,9 +1962,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           dialogRef.afterClosed().subscribe(function (result) {
             if (result) {
               if (result[0].modo == 'editar') {
-                _this8.updateRowInTable(result);
+                _this9.updateRowInTable(result);
               } else {
-                _this8.addRowInTable(result);
+                _this9.addRowInTable(result);
               }
             }
           });
@@ -2661,17 +2684,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(BarbeiroComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this9 = this;
+          var _this10 = this;
 
           this.BarbeiroService.getBarbeiros().subscribe(function (data) {
-            _this9.isLoading = false;
-            _this9.barbeiros = data; // Assign the data to the data source for the table to render
+            _this10.isLoading = false;
+            _this10.barbeiros = data; // Assign the data to the data source for the table to render
 
-            _this9.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_5__["MatTableDataSource"](_this9.barbeiros);
-            _this9.dataSource.paginator = _this9.paginator;
-            _this9.dataSource.sort = _this9.sort;
+            _this10.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_5__["MatTableDataSource"](_this10.barbeiros);
+            _this10.dataSource.paginator = _this10.paginator;
+            _this10.dataSource.sort = _this10.sort;
           }, function (error) {
-            return _this9.isLoading = false;
+            return _this10.isLoading = false;
           });
         }
       }, {
@@ -2727,7 +2750,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "openModal",
         value: function openModal(id) {
-          var _this10 = this;
+          var _this11 = this;
 
           var dialogConfig = new _angular_material_dialog__WEBPACK_IMPORTED_MODULE_1__["MatDialogConfig"]();
           dialogConfig.data = {
@@ -2737,9 +2760,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           dialogRef.afterClosed().subscribe(function (result) {
             if (result) {
               if (result[0].modo == 'editar') {
-                _this10.updateRowInTable(result);
+                _this11.updateRowInTable(result);
               } else {
-                _this10.addRowInTable(result);
+                _this11.addRowInTable(result);
               }
             }
           });
@@ -3105,15 +3128,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       var _super4 = _createSuper(CustomDateParserFormatter);
 
       function CustomDateParserFormatter() {
-        var _this11;
+        var _this12;
 
         _classCallCheck(this, CustomDateParserFormatter);
 
-        _this11 = _super4.apply(this, arguments);
-        _this11.DELIMITER = '-';
-        _this11.DELIMITER_SHOW = '/';
-        _this11.DELIMITER_TIME = ':';
-        return _this11;
+        _this12 = _super4.apply(this, arguments);
+        _this12.DELIMITER = '-';
+        _this12.DELIMITER_SHOW = '/';
+        _this12.DELIMITER_TIME = ':';
+        return _this12;
       }
 
       _createClass(CustomDateParserFormatter, [{
@@ -3161,7 +3184,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     var CeAgendamentoComponent = /*#__PURE__*/function () {
       function CeAgendamentoComponent(dialogRef, AgendamentoService, ClienteService, BarbeiroService, _http, formatter, data) {
-        var _this12 = this;
+        var _this13 = this;
 
         _classCallCheck(this, CeAgendamentoComponent);
 
@@ -3198,7 +3221,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           };
 
           this._http.post(API_URL + '/agendamentos/find', formID).subscribe(function (agendamento) {
-            _this12.agendamento = [];
+            _this13.agendamento = [];
 
             var _iterator2 = _createForOfIteratorHelper(agendamento),
                 _step2;
@@ -3207,11 +3230,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
                 var p = _step2.value;
                 var c = p.cliente;
-                _this12.tempClienteNome = c.nome;
-                _this12.fromDate = _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_1__["NgbDate"].from(_this12.formatter.parse(p.dataagendamento));
-                _this12.fromTime = _this12.parseTime(p.dataagendamento.substr(11, 5));
+                _this13.tempClienteNome = c.nome;
+                _this13.fromDate = _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_1__["NgbDate"].from(_this13.formatter.parse(p.dataagendamento));
+                _this13.fromTime = _this13.parseTime(p.dataagendamento.substr(11, 5));
 
-                _this12.agendamento.push(p);
+                _this13.agendamento.push(p);
               }
             } catch (err) {
               _iterator2.e(err);
@@ -3245,45 +3268,45 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getAgendamento",
         value: function getAgendamento(value) {
-          var _this13 = this;
+          var _this14 = this;
 
           this.AgendamentoService.getAgendamentos(value).subscribe(function (agendamento) {
-            return _this13.agendamento = agendamento;
+            return _this14.agendamento = agendamento;
           }, function (error) {
-            return _this13.handleError(error);
+            return _this14.handleError(error);
           });
         }
       }, {
         key: "postAgendamento",
         value: function postAgendamento(value) {
-          var _this14 = this;
+          var _this15 = this;
 
           this.AgendamentoService.postAgendamento(value).subscribe(function (agendamento) {
-            _this14.dialogRef.close(agendamento);
+            _this15.dialogRef.close(agendamento);
           }, function (error) {
-            _this14.handleError(error);
+            _this15.handleError(error);
           });
         }
       }, {
         key: "getClientes",
         value: function getClientes() {
-          var _this15 = this;
+          var _this16 = this;
 
           this.ClienteService.getClientes().subscribe(function (clientes) {
-            return _this15.clientes = clientes;
+            return _this16.clientes = clientes;
           }, function (error) {
-            return _this15.error = error;
+            return _this16.error = error;
           });
         }
       }, {
         key: "getBarbeiros",
         value: function getBarbeiros() {
-          var _this16 = this;
+          var _this17 = this;
 
           this.BarbeiroService.getBarbeiros().subscribe(function (barbeiros) {
-            return _this16.barbeiros = barbeiros;
+            return _this17.barbeiros = barbeiros;
           }, function (error) {
-            return _this16.error = error;
+            return _this17.error = error;
           });
         }
       }, {
@@ -3347,17 +3370,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getServerResponseClientes",
         value: function getServerResponseClientes(event) {
-          var _this17 = this;
+          var _this18 = this;
 
           this.isLoadingResult = true;
           this.ClienteService.getBuscaClientes(event).subscribe(function (data) {
             if (data[0]['nome'] == undefined) {
-              _this17.clientes = [];
+              _this18.clientes = [];
             } else {
-              _this17.clientes = data;
+              _this18.clientes = data;
             }
 
-            _this17.isLoadingResult = false;
+            _this18.isLoadingResult = false;
           });
         }
       }, {
@@ -3761,7 +3784,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     var CeBarbeiroComponent = /*#__PURE__*/function () {
       function CeBarbeiroComponent(dialogRef, BarbeiroService, _http, data) {
-        var _this18 = this;
+        var _this19 = this;
 
         _classCallCheck(this, CeBarbeiroComponent);
 
@@ -3782,7 +3805,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           };
 
           this._http.post(API_URL + '/barbeiro/edit', formID).subscribe(function (barbeiro) {
-            _this18.barbeiro = barbeiro;
+            _this19.barbeiro = barbeiro;
           });
         } else {
           this.modo = 'Novo';
@@ -3806,12 +3829,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "post",
         value: function post(value) {
-          var _this19 = this;
+          var _this20 = this;
 
           this.BarbeiroService.post(value).subscribe(function (barbeiro) {
-            _this19.dialogRef.close(barbeiro);
+            _this20.dialogRef.close(barbeiro);
           }, function (error) {
-            _this19.handleError(error);
+            _this20.handleError(error);
           });
         }
       }, {
@@ -4161,7 +4184,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     var CeClienteComponent = /*#__PURE__*/function () {
       function CeClienteComponent(dialogRef, ClienteService, UfService, MunicipiosService, _http, data) {
-        var _this20 = this;
+        var _this21 = this;
 
         _classCallCheck(this, CeClienteComponent);
 
@@ -4198,10 +4221,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           };
 
           this._http.post(API_URL + '/cliente/edit', formID).subscribe(function (cliente) {
-            _this20.cliente = cliente;
+            _this21.cliente = cliente;
 
             if (cliente[0]['endereco_id']) {
-              _this20.endereco = [{
+              _this21.endereco = [{
                 id: cliente[0]['endereco_id'],
                 logradouro: cliente[0]['logradouro'],
                 numero: cliente[0]['numero'],
@@ -4210,11 +4233,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 municipio_id: cliente[0]['municipio_id'],
                 cep: cliente[0]['cep']
               }];
-              _this20.uf = cliente[0]['uf_id'];
-              _this20.municipio = cliente[0]['municipio_id'];
+              _this21.uf = cliente[0]['uf_id'];
+              _this21.municipio = cliente[0]['municipio_id'];
 
-              if (_this20.uf) {
-                _this20.selectMunicipio(_this20.uf);
+              if (_this21.uf) {
+                _this21.selectMunicipio(_this21.uf);
               }
             }
           });
@@ -4231,7 +4254,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "selectMunicipio",
         value: function selectMunicipio(uf_id) {
-          var _this21 = this;
+          var _this22 = this;
 
           if (uf_id) {
             this.municipios = [{
@@ -4239,9 +4262,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               nome: 'Carregando...'
             }];
             this.MunicipiosService.getMunicipios(uf_id).subscribe(function (municipios) {
-              return _this21.municipios = municipios;
+              return _this22.municipios = municipios;
             }, function (error) {
-              return _this21.handleError(error);
+              return _this22.handleError(error);
             });
           } else {
             this.municipios = null;
@@ -4269,12 +4292,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "post",
         value: function post(value) {
-          var _this22 = this;
+          var _this23 = this;
 
           this.ClienteService.post(value).subscribe(function (data) {
-            _this22.dialogRef.close(data);
+            _this23.dialogRef.close(data);
           }, function (error) {
-            _this22.handleError(error);
+            _this23.handleError(error);
           });
         }
       }, {
@@ -4970,7 +4993,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     var CeUsuarioComponent = /*#__PURE__*/function () {
       function CeUsuarioComponent(dialogRef, UsuarioService, _http, data) {
-        var _this23 = this;
+        var _this24 = this;
 
         _classCallCheck(this, CeUsuarioComponent);
 
@@ -4995,7 +5018,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           };
 
           this._http.post(API_URL + '/usuario/edit', formID).subscribe(function (usuario) {
-            _this23.usuario = usuario;
+            _this24.usuario = usuario;
           });
         } else {
           this.modo = 'Novo';
@@ -5022,12 +5045,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "post",
         value: function post(value) {
-          var _this24 = this;
+          var _this25 = this;
 
           this.UsuarioService.post(value).subscribe(function (data) {
-            _this24.dialogRef.close(data);
+            _this25.dialogRef.close(data);
           }, function (error) {
-            _this24.handleError(error);
+            _this25.handleError(error);
           });
         }
       }, {
@@ -5530,17 +5553,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(ClienteComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this25 = this;
+          var _this26 = this;
 
           this.ClienteService.getClientes().subscribe(function (data) {
-            _this25.isLoading = false;
-            _this25.clientes = data; // Assign the data to the data source for the table to render
+            _this26.isLoading = false;
+            _this26.clientes = data; // Assign the data to the data source for the table to render
 
-            _this25.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_5__["MatTableDataSource"](_this25.clientes);
-            _this25.dataSource.paginator = _this25.paginator;
-            _this25.dataSource.sort = _this25.sort;
+            _this26.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_5__["MatTableDataSource"](_this26.clientes);
+            _this26.dataSource.paginator = _this26.paginator;
+            _this26.dataSource.sort = _this26.sort;
           }, function (error) {
-            return _this25.isLoading = false;
+            return _this26.isLoading = false;
           });
         }
       }, {
@@ -5596,7 +5619,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "openModal",
         value: function openModal(id) {
-          var _this26 = this;
+          var _this27 = this;
 
           var dialogConfig = new _angular_material_dialog__WEBPACK_IMPORTED_MODULE_1__["MatDialogConfig"]();
           dialogConfig.data = {
@@ -5606,9 +5629,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           dialogRef.afterClosed().subscribe(function (result) {
             if (result) {
               if (result[0].modo == 'editar') {
-                _this26.updateRowInTable(result);
+                _this27.updateRowInTable(result);
               } else {
-                _this26.addRowInTable(result);
+                _this27.addRowInTable(result);
               }
             }
           });
@@ -5890,12 +5913,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(LoginComponent, [{
         key: "onSubmit",
         value: function onSubmit() {
-          var _this27 = this;
+          var _this28 = this;
 
           this.Jarwis.login(this.form).subscribe(function (data) {
-            return _this27.handleResponse(data);
+            return _this28.handleResponse(data);
           }, function (error) {
-            return _this27.handleError(error);
+            return _this28.handleError(error);
           });
         }
       }, {
@@ -6308,10 +6331,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(NavbarComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this28 = this;
+          var _this29 = this;
 
           this.Auth.authStatus.subscribe(function (value) {
-            return _this28.loggedIn = value;
+            return _this29.loggedIn = value;
           });
           /*if (this.loggedIn) {
             this.userLogged = this.UsuarioService.userLogged
@@ -6530,15 +6553,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "onSubmit",
         value: function onSubmit() {
-          var _this29 = this;
+          var _this30 = this;
 
           this.Notfiy.info('Wait...', {
             timeout: 5000
           });
           this.Jarvis.sendPasswordResetLink(this.form).subscribe(function (data) {
-            return _this29.handleResponse(data);
+            return _this30.handleResponse(data);
           }, function (error) {
-            return _this29.notify.error(error.error.error);
+            return _this30.notify.error(error.error.error);
           });
         }
       }, {
@@ -6720,7 +6743,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     var ResponseResetComponent = /*#__PURE__*/function () {
       function ResponseResetComponent(route, Jarwis, router, Notify) {
-        var _this30 = this;
+        var _this31 = this;
 
         _classCallCheck(this, ResponseResetComponent);
 
@@ -6736,32 +6759,32 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           resetToken: null
         };
         route.queryParams.subscribe(function (params) {
-          _this30.form.resetToken = params['token'];
+          _this31.form.resetToken = params['token'];
         });
       }
 
       _createClass(ResponseResetComponent, [{
         key: "onSubmit",
         value: function onSubmit() {
-          var _this31 = this;
+          var _this32 = this;
 
           this.Jarwis.changePassword(this.form).subscribe(function (data) {
-            return _this31.handleResponse(data);
+            return _this32.handleResponse(data);
           }, function (error) {
-            return _this31.handleError(error);
+            return _this32.handleError(error);
           });
         }
       }, {
         key: "handleResponse",
         value: function handleResponse(data) {
-          var _this32 = this;
+          var _this33 = this;
 
           var _router = this.router;
           this.Notify.confirm('Done!, Now login with new Password', {
             buttons: [{
               text: 'Okay',
               action: function action(toster) {
-                _router.navigateByUrl('/login'), _this32.Notify.remove(toster.id);
+                _router.navigateByUrl('/login'), _this33.Notify.remove(toster.id);
               }
             }]
           });
@@ -7058,12 +7081,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(SignupComponent, [{
         key: "onSubmit",
         value: function onSubmit() {
-          var _this33 = this;
+          var _this34 = this;
 
           this.Jarwis.signup(this.form).subscribe(function (data) {
-            return _this33.handleResponse(data);
+            return _this34.handleResponse(data);
           }, function (error) {
-            return _this33.handleError(error);
+            return _this34.handleError(error);
           });
         }
       }, {
@@ -7588,17 +7611,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(UsuarioComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this34 = this;
+          var _this35 = this;
 
           this.UsuarioService.getUsuarios().subscribe(function (data) {
-            _this34.isLoading = false;
-            _this34.usuarios = data; // Assign the data to the data source for the table to render
+            _this35.isLoading = false;
+            _this35.usuarios = data; // Assign the data to the data source for the table to render
 
-            _this34.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_5__["MatTableDataSource"](_this34.usuarios);
-            _this34.dataSource.paginator = _this34.paginator;
-            _this34.dataSource.sort = _this34.sort;
+            _this35.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_5__["MatTableDataSource"](_this35.usuarios);
+            _this35.dataSource.paginator = _this35.paginator;
+            _this35.dataSource.sort = _this35.sort;
           }, function (error) {
-            return _this34.isLoading = false;
+            return _this35.isLoading = false;
           });
         }
       }, {
@@ -7654,7 +7677,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "openModal",
         value: function openModal(id) {
-          var _this35 = this;
+          var _this36 = this;
 
           var dialogConfig = new _angular_material_dialog__WEBPACK_IMPORTED_MODULE_1__["MatDialogConfig"]();
           dialogConfig.data = {
@@ -7664,9 +7687,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           dialogRef.afterClosed().subscribe(function (result) {
             if (result) {
               if (result[0].modo == 'editar') {
-                _this35.updateRowInTable(result);
+                _this36.updateRowInTable(result);
               } else {
-                _this35.addRowInTable(result);
+                _this36.addRowInTable(result);
               }
             }
           });
@@ -8040,7 +8063,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(AgendamentoService, [{
         key: "getNotifyAgendamentos",
         value: function getNotifyAgendamentos() {
-          var _this36 = this;
+          var _this37 = this;
 
           var tempForm = {
             tempo: 6
@@ -8071,14 +8094,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                   Fone2 = ' | ' + 'Fone 2: ' + d.cliente.fone2;
                 }
 
-                _this36.Notfiy.confirm('Fone 1: ' + d.cliente.fone1 + Fone2, d.cliente.nome + ' ' + sobrenome, {
+                _this37.Notfiy.confirm('Fone 1: ' + d.cliente.fone1 + Fone2, d.cliente.nome + ' ' + sobrenome, {
                   showProgressBar: false,
                   closeOnClick: true,
                   pauseOnHover: true,
                   buttons: [{
                     text: 'Fechar',
                     action: function action(toast) {
-                      _this36.Notfiy.remove(toast.id);
+                      _this37.Notfiy.remove(toast.id);
                     },
                     bold: false
                   }]
@@ -8976,7 +8999,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var API_URL = _global_constants__WEBPACK_IMPORTED_MODULE_1__["GlobalConstants"].API_URL;
 
     var UfService = function UfService(_http) {
-      var _this37 = this;
+      var _this38 = this;
 
       _classCallCheck(this, UfService);
 
@@ -8991,7 +9014,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
             var d = _step4.value;
 
-            _this37.ufs.push(d);
+            _this38.ufs.push(d);
           }
         } catch (err) {
           _iterator4.e(err);
@@ -9092,12 +9115,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(UsuarioService, [{
         key: "me",
         value: function me() {
-          var _this38 = this;
+          var _this39 = this;
 
           this.userLogged = [];
 
           this._http.get(API_URL + '/me').subscribe(function (data) {
-            _this38.userLogged.push(data['user']);
+            _this39.userLogged.push(data['user']);
           });
         }
       }, {
