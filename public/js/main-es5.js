@@ -8129,36 +8129,38 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             try {
               for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
                 var d = _step3.value;
-                //console.log(d.cliente.sobrenome.length)
-                var sobrenome = '';
-                var Fone2 = '';
 
-                if (d.cliente.sobrenome) {
-                  sobrenome = d.cliente.sobrenome.substr(0, 6);
+                if (d.cliente.nome) {
+                  var sobrenome = '';
+                  var Fone2 = '';
 
-                  if (d.cliente.sobrenome.length > 6) {
-                    sobrenome += '...';
+                  if (d.cliente.sobrenome) {
+                    sobrenome = d.cliente.sobrenome.substr(0, 6);
+
+                    if (d.cliente.sobrenome.length > 6) {
+                      sobrenome += '...';
+                    }
+                  } else {
+                    sobrenome = '';
                   }
-                } else {
-                  sobrenome = '';
-                }
 
-                if (Fone2) {
-                  Fone2 = ' | ' + 'Fone 2: ' + d.cliente.fone2;
-                }
+                  if (Fone2) {
+                    Fone2 = ' | ' + 'Fone 2: ' + d.cliente.fone2;
+                  }
 
-                _this37.Notfiy.confirm('Fone 1: ' + d.cliente.fone1 + Fone2, d.cliente.nome + ' ' + sobrenome, {
-                  showProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  buttons: [{
-                    text: 'Fechar',
-                    action: function action(toast) {
-                      _this37.Notfiy.remove(toast.id);
-                    },
-                    bold: false
-                  }]
-                });
+                  _this37.Notfiy.confirm('Fone 1: ' + d.cliente.fone1 + Fone2, d.cliente.nome + ' ' + sobrenome, {
+                    showProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    buttons: [{
+                      text: 'Fechar',
+                      action: function action(toast) {
+                        _this37.Notfiy.remove(toast.id);
+                      },
+                      bold: false
+                    }]
+                  });
+                }
               }
             } catch (err) {
               _iterator3.e(err);

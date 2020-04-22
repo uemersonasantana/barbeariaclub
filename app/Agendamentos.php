@@ -12,9 +12,9 @@ class Agendamentos extends Model
     protected $fillable = ['descricao', 'dataagendamento', 'cliente_id', 'barbeiro_id', 'empresa_id', 'user_id'];
 
     function barbeiro() {
-        return $this->belongsTo('App\Barbeiro');
+        return $this->belongsTo('App\Barbeiro')->withTrashed();
     }
     function cliente() {
-        return $this->belongsTo('App\Cliente');
+        return $this->belongsTo('App\Cliente')->withTrashed();
     }
 }

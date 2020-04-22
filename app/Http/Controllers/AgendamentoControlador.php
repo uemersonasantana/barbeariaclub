@@ -22,7 +22,6 @@ class AgendamentoControlador extends Controller
         if ( $request->id ) {
             $data->where('id', '=', $request->id);
         }
-
         if ( $request->cliente_id ) {
             $data->where('cliente_id', '=', $request->cliente_id);
         }
